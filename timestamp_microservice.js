@@ -26,16 +26,14 @@ app.get("/api/:date", (req, res) => {
 
   if (!isNaN(Date.parse(dateString))) {
     let dateObject = new Date(dateString);
-    res.json({ unix: dateObject.valueOf(), utc: dateObject.toUTCString()   });
+    return res.json({ unix: dateObject.valueOf(), utc: dateObject.toUTCString()   });
   } 
-  else if (/\d{5,}/.test(dateString)) {
-      let dateInt = parseInt(dateString);
-      res.json({ unix: dateInt, utc: new Date(dateInt).toUTCString() });
-  } 
-  else {
-    res.json({ error: "Invalid Date" });
+
+  if(/\d{5,}/.test(dateString)){
+    let dateInt = parseInt(dateString);
+    return res.json({ unix: dateInt, utc: new Date(dateInt).toUTCString() });
   }
-    
+  res.json({ error: "Invalid Date" });
 });
 
 app.get("/api/", (req , res) => {
